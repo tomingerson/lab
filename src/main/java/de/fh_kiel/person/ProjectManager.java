@@ -1,29 +1,29 @@
 package de.fh_kiel.person;
 
-/**
- * @author Created by tom on 08.10.2016.
- */
-public class ProjectManager {
-    private final Developer developer;
-    private long yearsOfExperience;
+import java.time.LocalDate;
 
-    public ProjectManager(final Developer developer) {
-        this.developer = developer;
+public class ProjectManager extends Developer {
+
+    private int experienceInYearsAsPM;
+
+    public ProjectManager() {
     }
 
-    public Developer getDeveloper() {
-        return developer;
+    public ProjectManager(final String firstName, final String lastName, final LocalDate dayOfBirth, final Gender gender, final int experienceInYears, final int minimumSalary,
+                          final int experienceInYearsAsPM) {
+        super(firstName, lastName, dayOfBirth, gender, experienceInYears, minimumSalary);
+        this.setExperienceInYearsAsPM(experienceInYearsAsPM);
     }
 
-    public long getYearsOfExperience() {
-        return yearsOfExperience;
+    public int getExperienceInYearsAsPM() {
+        return experienceInYearsAsPM;
     }
 
-    public void setYearsOfExperience(final long yearsOfExperience) {
-        if (yearsOfExperience > this.getDeveloper().getYearsOfExperience()) {
-            throw new IllegalStateException("experience as project manager must not be greater than " +
-                    "the experience as developer");
+    public void setExperienceInYearsAsPM(final int experienceInYearsAsPM) {
+        if (experienceInYearsAsPM > getExperienceInYears()) {
+            throw new IllegalArgumentException(
+                    "experienceInYearsAsPM (" + this.experienceInYearsAsPM + ") is bigger than the overall experienceInYears (" + getExperienceInYears() + ")");
         }
-        this.yearsOfExperience = yearsOfExperience;
+        this.experienceInYearsAsPM = experienceInYearsAsPM;
     }
 }

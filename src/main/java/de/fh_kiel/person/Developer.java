@@ -1,45 +1,56 @@
 package de.fh_kiel.person;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * @author Created by tom on 08.10.2016.
+ * Class Developer, which is a Person
+ *
+ * @author jpr
  */
 public class Developer extends Person {
 
-    private long yearsOfExperience;
-    private double minimumSalary;
-    private final List<ProgrammingLanguage> knownLanguages = new ArrayList<>();
+    private int experienceInYears;
+    private int minimumSalary;
+    private final Set<String> programmingLanguages = new HashSet<>();
 
-    public long getYearsOfExperience() {
-        return yearsOfExperience;
+    public Developer() {
+
     }
 
-    public void setYearsOfExperience(long yearsOfExperience) {
-        this.yearsOfExperience = yearsOfExperience;
-    }
-
-    public double getMinimumSalary() {
-        return minimumSalary;
-    }
-
-    public void setMinimumSalary(double minimumSalary) {
+    public Developer(final String firstName, final String lastName, final LocalDate dayOfBirth, final Gender gender, final int experienceInYears, final int minimumSalary) {
+        super(firstName, lastName, dayOfBirth, gender);
+        this.experienceInYears = experienceInYears;
         this.minimumSalary = minimumSalary;
     }
 
-    public List<ProgrammingLanguage> getKnownLanguages() {
-        return knownLanguages;
+    public int getExperienceInYears() {
+        return experienceInYears;
     }
 
-    public boolean addNewLanguage(final ProgrammingLanguage pl) {
-        return this.knownLanguages.add(pl);
+    public void setExperienceInYears(final int experienceInYears) {
+        this.experienceInYears = experienceInYears;
     }
 
-    public boolean  removeLanguage(final ProgrammingLanguage pl) {
-        return this.knownLanguages.remove(pl);
+    public int getMinimumSalary() {
+        return minimumSalary;
+    }
+
+    public void setMinimumSalary(final int minimumSalary) {
+        this.minimumSalary = minimumSalary;
+    }
+
+    public Set<String> getProgrammingLanguages() {
+        return programmingLanguages;
+    }
+
+
+    public void removeProgrammingLanguage(String programmingLanguage) {
+        programmingLanguages.remove(programmingLanguage);
+    }
+
+    public void addProgrammingLanguage(final String programmingLanguage) {
+        this.programmingLanguages.add(programmingLanguage);
     }
 }

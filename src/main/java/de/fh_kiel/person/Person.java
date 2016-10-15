@@ -1,99 +1,113 @@
 package de.fh_kiel.person;
 
+
+import java.time.LocalDate;
+import java.time.Period;
+
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-
 /**
- * @author tom
+ * Class Person modelling a person
+ *
+ * @author jpr
  */
-public class Person implements Serializable {
+public class Person implements Comparable<Person> {
 
-    private Long id;
-    private String givenName;
-    private String surName;
-    private LocalDate birthdate;
-    private String sex;
+    private String firstName;
+    private String lastName;
+    private LocalDate dayOfBirth;
+    private Gender gender;
 
-    public Long getId() {
-        return id;
+    /**
+     * Default constructor
+     */
+    public Person() {
+        // nothing to do here
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    /**
+     * Constructor
+     *
+     * @param firstName  the firstname
+     * @param lastName   the lastname
+     * @param dayOfBirth the birthday
+     * @param gender     the gender
+     */
+    public Person(final String firstName, final String lastName, final LocalDate dayOfBirth, final Gender gender) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dayOfBirth = dayOfBirth;
+        this.gender = gender;
     }
 
-    public String getGivenName() {
-        return givenName;
+    public final String getFirstName() {
+        return firstName;
     }
 
-    public void setGivenName(String givenName) {
-        this.givenName = givenName;
+    public final void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getSurName() {
-        return surName;
+    public final String getLastName() {
+        return lastName;
     }
 
-    public void setSurName(String surName) {
-        this.surName = surName;
+    public final void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public LocalDate getBirthdate() {
-        return birthdate;
+    public final LocalDate getDayOfBirth() {
+        return dayOfBirth;
     }
 
-    public void setBirthdate(LocalDate birthdate) {
-        this.birthdate = birthdate;
+    public final void setDayOfBirth(LocalDate dayOfBirth) {
+        this.dayOfBirth = dayOfBirth;
     }
 
-    public String getSex() {
-        return sex;
+    public final Gender getGender() {
+        return gender;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public final void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public final int getAge() {
+        if (dayOfBirth != null) {
+            return Period.between(this.dayOfBirth, LocalDate.now()).getYears();
+        }
+        return 0;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("id", id)
-                .append("givenName", givenName)
-                .append("surName", surName)
-                .append("birthdate", birthdate)
-                .append("sex", sex)
-                .toString();
+
+        return ToStringBuilder.reflectionToString(this);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (!(o instanceof Person)) {
+            return false;
+        }
+        Person checkPerson = (Person) o;
 
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Person person = (Person) o;
-
-        return new EqualsBuilder()
-                .append(id, person.id)
-                .append(givenName, person.givenName)
-                .append(surName, person.surName)
-                .append(birthdate, person.birthdate)
-                .append(sex, person.sex)
-                .isEquals();
+        return new EqualsBuilder().append(this.firstName, checkPerson.getFirstName()).append(this.lastName, checkPerson.getLastName())
+                .append(this.dayOfBirth, checkPerson.getDayOfBirth()).append(this.gender, checkPerson.getGender()).isEquals();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(id)
-                .append(givenName)
-                .append(surName)
-                .append(birthdate)
-                .append(sex)
-                .toHashCode();
+
+        return new HashCodeBuilder().append(this.firstName).append(this.lastName).append(this.dayOfBirth).append(this.gender).toHashCode();
+    }
+
+    @Override
+    public int compareTo(final Person other) {
+        return new CompareToBuilder().append(this.lastName, other.lastName).append(this.firstName, other.firstName).toComparison();
     }
 }
+
