@@ -1,24 +1,17 @@
 package de.fh_kiel.person;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import org.apache.commons.lang3.builder.CompareToBuilder;
+
+import java.util.*;
 
 public class PersonService {
 
-    private final Set<Person> persons;
+    private final PersonDAO personDAO;
 
-    /**
-     * Constructor
-     *
-     * @param persons persons in the pool
-     */
-    public PersonService(final Person... persons) {
-        this.persons = new HashSet<>(Arrays.asList(persons));
+
+    public PersonService(PersonDAO personDAO) {
+        this.personDAO = personDAO;
     }
-
 
     /**
      * Get all persons
@@ -26,7 +19,7 @@ public class PersonService {
      * @return all the persons
      */
     public Collection<Person> listPersons() {
-        return new TreeSet<>(persons);
+        return personDAO.getAllPersons();
     }
 
     /**
@@ -36,15 +29,21 @@ public class PersonService {
      * @return the persons who have experience in programminng with the supplied programming language
      */
     public Collection<Person> listPersons(final String programmingLanguage) {
-        final Collection<Person> result = new TreeSet<>();
+        final Collection<Person> result = new TreeSet<>(new Comparator<Person>() {
+            @Override
+            public int compare(final Person o1, final Person o2) {
+                return new CompareToBuilder().append(o1.getLastName(), o2.getLastName()).append
+                        (o1.getFirstName(), o2.getFirstName()).toComparison();
+            }
+        });
 
-        for (final Person person : persons) {
+        for (final Person person : personDAO.getAllPersons()) {
             if (!(person instanceof Developer)) {
                 continue;
             }
 
             final Developer developer = (Developer) person;
-            for (String currProgrammingLanguage : developer.getProgrammingLanguages()) {
+            for (final String currProgrammingLanguage : developer.getProgrammingLanguages()) {
                 if (currProgrammingLanguage.equals(programmingLanguage)) {
                     result.add(developer);
                     break;

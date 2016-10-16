@@ -68,3 +68,4 @@ gradle/
 lab.iml
 lab.ipr
 lab.iws
+/developer_portal/src/main/generated/

@@ -19,8 +19,9 @@ public class Developer extends Person {
 
     }
 
-    public Developer(final String firstName, final String lastName, final LocalDate dayOfBirth, final Gender gender, final int experienceInYears, final int minimumSalary) {
-        super(firstName, lastName, dayOfBirth, gender);
+    public Developer(final Long id, final String firstName, final String lastName, final LocalDate
+            dayOfBirth, final Gender gender, final int experienceInYears, final int minimumSalary) {
+        super(id, firstName, lastName, dayOfBirth, gender);
         this.experienceInYears = experienceInYears;
         this.minimumSalary = minimumSalary;
     }
