@@ -11,9 +11,9 @@ import java.util.Set;
  */
 public class Developer extends Person {
 
+    private final Set<String> programmingLanguages = new HashSet<>();
     private int experienceInYears;
     private int minimumSalary;
-    private final Set<String> programmingLanguages = new HashSet<>();
 
     public Developer() {
 

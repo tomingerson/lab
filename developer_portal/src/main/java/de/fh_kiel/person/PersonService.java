@@ -2,7 +2,9 @@ package de.fh_kiel.person;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 public class PersonService {
 

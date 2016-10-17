@@ -17,6 +17,7 @@ public class PersonDAO {
 
     /**
      * takes the person and saves it.
+     *
      * @param person newly created person
      */
     public void createPerson(final Person person) {
@@ -33,6 +34,7 @@ public class PersonDAO {
         person.setId(maxId);
         persons.add(person);
     }
+
     public void updatePerson(final Person person) {
         assert person.getId() != null;
 
@@ -42,6 +44,7 @@ public class PersonDAO {
 
     /**
      * finds all persons known by the system.
+     *
      * @return list of all known persons
      */
     public List<Person> getAllPersons() {
@@ -58,6 +61,7 @@ public class PersonDAO {
 
     /**
      * finds a person with the given id. if not found, an exception is thrown
+     *
      * @param id to look for
      * @return the person found, otherwise an exception
      */
@@ -65,14 +69,14 @@ public class PersonDAO {
 
         Person result = null;
 
-        for (final Person p : persons ) {
-            if ( Objects.equals(p.getId(), id)) {
+        for (final Person p : persons) {
+            if (Objects.equals(p.getId(), id)) {
                 result = p;
                 break;
             }
         }
 
-        if (result == null ) {
+        if (result == null) {
             throw new IllegalStateException("no person found with id " + id);
         }
 

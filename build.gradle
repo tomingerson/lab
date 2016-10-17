@@ -46,14 +46,11 @@ project(':annotation-processing') {
 // the portal needs the annotation processor and some more dependencies to test
 project(':developer_portal') {
     sourceSets {
-        generated {
+        main {
             java {
-                srcDirs = ['src/main/generated']
+                srcDirs = ['src/main/generated', 'src/main/java']
             }
         }
-//        main {
-//            compileClasspath += sourceSets.generated.output
-//        }
     }
 
     dependencies {
@@ -73,27 +70,14 @@ project(':developer_portal') {
                 "-proc:only",
                 "-processor", "de.fh_kiel.annotation_processor.BoilerplateProcessor"
         ]
-        destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+        destinationDir = sourceSets.main.java.srcDirs.iterator().next()
     }
 
     compileJava {
         dependsOn runProcessor
-        source = runProcessor.destinationDir
-    }
-
-    compileGeneratedJava {
-        dependsOn runProcessor
-        options.warnings = false
-        classpath = sourceSets.main.runtimeClasspath
     }
 
     clean {
-        delete sourceSets.generated.java.srcDirs
-    }
-
-    idea {
-        module {
-            sourceDirs += file('src/main/generated')
-        }
+        delete sourceSets.main.java.srcDirs.iterator().next()
     }
 }

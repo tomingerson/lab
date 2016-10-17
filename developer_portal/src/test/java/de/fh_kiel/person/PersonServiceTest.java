@@ -13,9 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -65,8 +63,8 @@ public class PersonServiceTest {
         final List<Person> list = new ArrayList<>(personService.listPersons());
         assertThat("list shouldn't be null", list, notNullValue());
         assertThat("list should have 4 entries", list, hasSize(4));
-        assertThat("wrong order of developers in result", list, contains(developer1, developer3,
-                projectManager, developer2));
+        assertThat("wrong order of developers in result", list, contains(developer1, developer2,
+                developer3, projectManager));
 
         verify(mockPersonDAO, times(1)).getAllPersons();
     }
@@ -84,12 +82,12 @@ public class PersonServiceTest {
         list = new ArrayList<>(personService.listPersons("Java"));
         assertThat("list shouldn't be null", list, notNullValue());
         assertThat("list should have 1 entries", list, hasSize(1));
-        assertThat("list should have correct order", list, contains(developer1));
+        assertThat("list should have correct order 1", list, contains(developer1));
 
         list = new ArrayList<>(personService.listPersons("F#"));
         assertThat("list shouldn't be null", list, notNullValue());
         assertThat("list should have 2 entries", list, hasSize(2));
-        assertThat("list should have correct order", list, contains(developer3, developer2));
+        assertThat("list should have correct order 2", list, contains(developer3, developer2));
 
         verify(mockPersonDAO, times(3)).getAllPersons();
     }
