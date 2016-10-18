@@ -6,12 +6,17 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeSet;
 
+/**
+ * This Service handles basics of {@link Person persons}. No Transactions yet.
+ *
+ * @author ergouser
+ */
 public class PersonService {
 
     private final PersonDAO personDAO;
 
 
-    public PersonService(PersonDAO personDAO) {
+    public PersonService(final PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
 

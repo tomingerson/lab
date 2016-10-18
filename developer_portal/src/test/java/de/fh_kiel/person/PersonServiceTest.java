@@ -34,8 +34,7 @@ public class PersonServiceTest {
 
     @Before
     public void setup() {
-        developer1 = new Developer(1L, "Mo", "Farah", LocalDate.of(1983, 10, 10), Gender.MALE, 1,
-                100000);
+        developer1 = new Developer(1L, "Mo", "Farah", LocalDate.of(1983, 10, 10), Gender.MALE, 1, 100000);
         developer1.addProgrammingLanguage("Java");
 
         developer2 = new Developer(2L, "Kevin", "Volland", LocalDate.of(1987, 5, 22), Gender.MALE, 5,

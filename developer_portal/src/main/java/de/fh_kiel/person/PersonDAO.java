@@ -5,13 +5,16 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import java.util.*;
 
 /**
+ * DataAccessObject to handle {@link Person persons}. Uses an internal storage, no database yet, no transactions yet.
+ * Designed to be a singleton.
+ *
  * @author Created by tom on 15.10.2016.
  */
 public class PersonDAO {
 
     private final Set<Person> persons;
 
-    public PersonDAO(Person... persons) {
+    public PersonDAO(final Person... persons) {
         this.persons = new HashSet<>(Arrays.asList(persons));
     }
 
@@ -48,7 +51,7 @@ public class PersonDAO {
      * @return list of all known persons
      */
     public List<Person> getAllPersons() {
-        ArrayList<Person> list = new ArrayList<>(persons);
+        final ArrayList<Person> list = new ArrayList<>(persons);
         Collections.sort(list, new Comparator<Person>() {
             @Override
             public int compare(final Person o1, final Person o2) {

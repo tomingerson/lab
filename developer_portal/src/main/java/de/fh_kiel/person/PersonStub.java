@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 /**
- * Class Person modelling a person
+ * Class Person modelling a person.
  *
  * @author jpr
  */

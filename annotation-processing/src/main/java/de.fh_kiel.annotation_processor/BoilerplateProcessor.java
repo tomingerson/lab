@@ -32,18 +32,14 @@ public class BoilerplateProcessor extends AbstractProcessor {
     public boolean process(final Set<? extends TypeElement> annotations, final RoundEnvironment
             roundEnv) {
 
-        final Messager messager = processingEnv.getMessager();
-        final Elements elementUtils = processingEnv.getElementUtils();
-        final Filer filer = processingEnv.getFiler();
-
         try {
             for (final Element annotatedElement : roundEnv.getElementsAnnotatedWith(Boilerplate.class)) {
                 final TypeElement typeElement = (TypeElement) annotatedElement;
-                generateCode(typeElement, elementUtils, filer);
+                generateCode(typeElement, processingEnv.getElementUtils(), processingEnv.getFiler());
             }
             return true;
         } catch (final IOException ex) {
-            messager.printMessage(Diagnostic.Kind.ERROR, "Could not write sourcefile. " + ex
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Could not write sourcefile. " + ex
                     .getLocalizedMessage());
             return false;
         }
@@ -86,6 +82,7 @@ public class BoilerplateProcessor extends AbstractProcessor {
             }
         }
 
+        // generate 2 constructors, one without any arguments, the other with all the fields
         final MethodSpec cons1 = MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC).build();
         final MethodSpec.Builder builder = MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC);
         for (final FieldSpec fs : allFields) {

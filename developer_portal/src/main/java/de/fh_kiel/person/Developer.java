@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Class Developer, which is a Person
+ * Class Developer, which is a Person.
  *
  * @author jpr
  */
@@ -47,7 +47,7 @@ public class Developer extends Person {
     }
 
 
-    public void removeProgrammingLanguage(String programmingLanguage) {
+    public void removeProgrammingLanguage(final String programmingLanguage) {
         programmingLanguages.remove(programmingLanguage);
     }
 

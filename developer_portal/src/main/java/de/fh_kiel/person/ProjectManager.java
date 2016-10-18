@@ -1,7 +1,13 @@
 package de.fh_kiel.person;
 
+
 import java.time.LocalDate;
 
+/**
+ * PM is special {@link Developer}. It has experience as PM.
+ *
+ * @author ergouser
+ */
 public class ProjectManager extends Developer {
 
     private int experienceInYearsAsPM;
