@@ -39,8 +39,8 @@ public class BoilerplateProcessor extends AbstractProcessor {
             }
             return true;
         } catch (final IOException ex) {
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Could not write sourcefile. " + ex
-                    .getLocalizedMessage());
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
+                    "Could not write sourcefile. " + ex.getLocalizedMessage());
             return false;
         }
     }
@@ -55,32 +55,32 @@ public class BoilerplateProcessor extends AbstractProcessor {
         final List<FieldSpec> allFields = new ArrayList<>();
         final List<MethodSpec> allGettersAndSetters = new ArrayList<>();
 
-        for (final Element elem : typeElement.getEnclosedElements()) {
-            if (elem.getKind() == ElementKind.FIELD) {
+        typeElement.getEnclosedElements().stream().filter(elem -> elem.getKind() == ElementKind.FIELD)
+                .forEach(elem -> {
 
-                final FieldSpec fs = FieldSpec.builder(TypeName.get(elem.asType()), elem.getSimpleName
-                        ().toString(), elem.getModifiers().toArray(new Modifier[elem.getModifiers()
-                        .size()])).build();
-                allFields.add(fs);
+                    final FieldSpec fs = FieldSpec.builder(TypeName.get(elem.asType()),
+                            elem.getSimpleName().toString(),
+                            elem.getModifiers().toArray(new Modifier[elem.getModifiers().size()]))
+                            .build();
+                    allFields.add(fs);
 
-                final MethodSpec getter = MethodSpec.methodBuilder("get" + StringUtils.capitalize(elem
-                        .getSimpleName().toString()))
-                        .addModifiers(Modifier.PUBLIC)
-                        .returns(TypeName.get(elem.asType()))
-                        .addStatement("return this.$N", fs.name)
-                        .build();
-                allGettersAndSetters.add(getter);
+                    final MethodSpec getter = MethodSpec.methodBuilder("get" +
+                            StringUtils.capitalize(elem.getSimpleName().toString()))
+                            .addModifiers(Modifier.PUBLIC)
+                            .returns(TypeName.get(elem.asType()))
+                            .addStatement("return this.$N", fs.name)
+                            .build();
+                    allGettersAndSetters.add(getter);
 
-                final MethodSpec setter = MethodSpec.methodBuilder("set" + StringUtils.capitalize(elem
-                        .getSimpleName().toString()))
-                        .addModifiers(Modifier.PUBLIC)
-                        .returns(TypeName.VOID)
-                        .addParameter(TypeName.get(elem.asType()), fs.name, Modifier.FINAL)
-                        .addStatement("this.$N = $N", fs.name, fs.name)
-                        .build();
-                allGettersAndSetters.add(setter);
-            }
-        }
+                    final MethodSpec setter = MethodSpec.methodBuilder("set" +
+                            StringUtils.capitalize(elem.getSimpleName().toString()))
+                            .addModifiers(Modifier.PUBLIC)
+                            .returns(TypeName.VOID)
+                            .addParameter(TypeName.get(elem.asType()), fs.name, Modifier.FINAL)
+                            .addStatement("this.$N = $N", fs.name, fs.name)
+                            .build();
+                    allGettersAndSetters.add(setter);
+                });
 
         // generate 2 constructors, one without any arguments, the other with all the fields
         final MethodSpec cons1 = MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC).build();
@@ -127,7 +127,6 @@ public class BoilerplateProcessor extends AbstractProcessor {
                 .build();
 
         final PackageElement pkg = elementUtils.getPackageOf(superClassName);
-        final JavaFile jf = JavaFile.builder(pkg.getQualifiedName().toString(), type).build();
-        jf.writeTo(filer);
+        JavaFile.builder(pkg.getQualifiedName().toString(), type).build().writeTo(filer);
     }
 }
