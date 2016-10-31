@@ -1,36 +1,47 @@
 package de.fh_kiel.person;
 
+import javax.annotation.Generated;
 
-import java.time.LocalDate;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-/**
- * PM is special {@link Developer}. It has experience as PM.
- *
- * @author ergouser
- */
+@Generated("annotation processor")
 public class ProjectManager extends Developer {
-
     private int experienceInYearsAsPM;
 
     public ProjectManager() {
     }
 
-    public ProjectManager(final Long id, final String firstName, final String lastName,
-                          final LocalDate dayOfBirth, final Gender gender, final int experienceInYears,
-                          final int minimumSalary, final int experienceInYearsAsPM) {
-        super(id, firstName, lastName, dayOfBirth, gender, experienceInYears, minimumSalary);
-        this.setExperienceInYearsAsPM(experienceInYearsAsPM);
+    public ProjectManager(final int experienceInYearsAsPM) {
+        this.experienceInYearsAsPM = experienceInYearsAsPM;
     }
 
     public int getExperienceInYearsAsPM() {
-        return experienceInYearsAsPM;
+        return this.experienceInYearsAsPM;
     }
 
     public void setExperienceInYearsAsPM(final int experienceInYearsAsPM) {
-        if (experienceInYearsAsPM > getExperienceInYears()) {
-            throw new IllegalArgumentException("experienceInYearsAsPM (" + this.experienceInYearsAsPM
-                    + ") is bigger than the overall experienceInYears (" + getExperienceInYears() + ")");
-        }
         this.experienceInYearsAsPM = experienceInYearsAsPM;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (!(o instanceof ProjectManager)) {
+            return false;
+        }
+        final ProjectManager objCurr = (ProjectManager) o;
+        return new EqualsBuilder().append(super.getId(), objCurr.getId()).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+
+        return new HashCodeBuilder().append(super.getId()).hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
