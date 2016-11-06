@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE")
+    }
+}
+apply plugin: 'spring-boot'
 apply plugin: 'java'
 apply plugin: 'idea'
 
@@ -11,6 +22,7 @@ repositories {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
+    apply plugin: 'spring-boot'
 
     sourceCompatibility = 1.8
 
@@ -22,62 +34,31 @@ subprojects {
 
     dependencies {
         compile 'org.apache.commons:commons-lang3:3.4'
+        compile 'org.springframework.boot:spring-boot-starter-web:1.4.1.RELEASE'
+        compile 'org.springframework.boot:spring-boot-starter-aop:1.4.1.RELEASE'
 
         testCompile('junit:junit:4.+') {
             exclude group: 'org.hamcrest'
         }
         testCompile 'org.hamcrest:hamcrest-all:1.+'
+        testCompile 'org.springframework.boot:spring-boot-starter-test:1.4.1.RELEASE'
     }
 
     group 'de.fh_kiel'
     version '1.0'
 }
 
-// the annotation processor needs the api to know, which annotations to scan
-project(':annotation-processing') {
-
-    dependencies {
-        compile project(':api')
-
-        compile 'com.squareup:javapoet:1.7.+'
-    }
-}
-
 // the portal needs the annotation processor and some more dependencies to test
 project(':developer_portal') {
-    sourceSets {
-        main {
-            java {
-                srcDirs = ['src/main/generated', 'src/main/java']
-            }
-        }
-    }
 
     dependencies {
-        compile project(':api')
-        compile project(':annotation-processing')
 
         testCompile('org.mockito:mockito-core:1.10.+') {
             exclude group: 'org.hamcrest'
         }
     }
 
-    task runProcessor(type: JavaCompile, group: 'build', description: 'generates classes including ' +
-            'the boilerplate code') {
-        source = sourceSets.main.java
-        classpath = configurations.compile
-        options.compilerArgs = [
-                "-proc:only",
-                "-processor", "de.fh_kiel.annotation_processor.BoilerplateProcessor"
-        ]
-        destinationDir = sourceSets.main.java.srcDirs.iterator().next()
-    }
-
-    compileJava {
-        dependsOn runProcessor
-    }
-
-    clean {
-        delete sourceSets.main.java.srcDirs.iterator().next()
+    springBoot {
+        mainClass = 'de.fh_kiel.ApplicationConfig'
     }
 }

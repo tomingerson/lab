@@ -1,31 +1,81 @@
 package de.fh_kiel.person;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
-
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import de.fh_kiel.CheckNull;
+
 /**
- * This Service handles basics of {@link Person persons}. No Transactions yet.
+ * Service implementation for {@link Person}
  *
- * @author ergouser
+ * @author jpr
  */
+@Service
 public class PersonService {
 
     private final PersonDAO personDAO;
 
 
-    public PersonService(final PersonDAO personDAO) {
+    /**
+     * Constructor
+     *
+     * @param personDAO the data storage for instances of {@link Person}
+     */
+    @Autowired
+    public PersonService(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
 
     /**
-     * Get all persons
+     * Stores the passed person.
      *
-     * @return all the persons
+     * @param person the person to create
      */
-    public Collection<Person> listPersons() {
+    @CheckNull
+    public void createPerson(final Person person) {
+        personDAO.createPerson(person);
+    }
+
+    /**
+     * Updates the passed person in our datastore.
+     *
+     * @param person the person to update
+     */
+    @CheckNull
+    public void updateCompany(final Person person) {
+        personDAO.updatePerson(person);
+    }
+
+    /**
+     * Deletes the passed person from our datastore.
+     *
+     * @param person the person to delete
+     */
+    @CheckNull
+    public void deletePerson(final Person person) {
+        personDAO.deletePerson(person);
+    }
+
+    /**
+     * Trys to find the person with the given id
+     *
+     * @param id the id of the person
+     * @return the person found or {@code null}, if no matching person was found
+     */
+    @CheckNull
+    public Person getPersonById(final Long id) {
+        return personDAO.getPersonById(id);
+    }
+
+    /**
+     * @return all persons currently stored
+     */
+    public Collection<Person> getAllPersons() {
         return personDAO.getAllPersons();
     }
 
@@ -35,12 +85,12 @@ public class PersonService {
      * @param programmingLanguage the programmingLanguage
      * @return the persons who have experience in programminng with the supplied programming language
      */
+    @CheckNull
     public Collection<Person> listPersons(final String programmingLanguage) {
         final Collection<Person> result = new TreeSet<>(new Comparator<Person>() {
             @Override
             public int compare(final Person o1, final Person o2) {
-                return new CompareToBuilder().append(o1.getLastName(), o2.getLastName()).append
-                        (o1.getFirstName(), o2.getFirstName()).toComparison();
+                return new CompareToBuilder().append(o1.getLastName(), o2.getLastName()).append(o1.getFirstName(), o2.getFirstName()).toComparison();
             }
         });
 
