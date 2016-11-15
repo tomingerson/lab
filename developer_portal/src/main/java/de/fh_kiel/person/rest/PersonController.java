@@ -24,7 +24,7 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @RequestMapping( method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Person> createPerson(@RequestBody final Person p) {
         try {
             this.personService.createPerson(p);
@@ -39,11 +39,12 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<Person> getAllPersons() {
-        return personService.getAllPersons();
+    public Person[] getAllPersons() {
+        final Collection<Person> allPersons = personService.getAllPersons();
+        return allPersons.toArray(new Person[allPersons.size()]);
     }
 
-    @RequestMapping(path="/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public Person getPerson(@PathVariable(value = "id") final Long id) {
         try {
             return personService.getPersonById(id);

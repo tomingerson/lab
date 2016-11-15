@@ -4,6 +4,7 @@ import de.fh_kiel.ApplicationConfig;
 import de.fh_kiel.person.Gender;
 import de.fh_kiel.person.Person;
 import de.fh_kiel.person.PersonService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,6 +74,13 @@ public class PersonControllerTest {
         personService.createPerson(testPerson2);
     }
 
+    @After
+    public void teardown() {
+        personService.deletePerson(testPerson2);
+        personService.deletePerson(testPerson1);
+        this.mockMvc = null;
+    }
+
     /**
      * Converts an object to a string in JSON-format using the wired {@link HttpMessageConverter}.
      *
@@ -128,6 +136,7 @@ public class PersonControllerTest {
     @Test
     public void getAllPersons() throws Exception {
         mockMvc.perform(get("/person"))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$", hasSize(2)))
