@@ -1,11 +1,10 @@
 package de.fh_kiel.company;
 
-import java.util.Collection;
-
+import de.fh_kiel.CheckNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.fh_kiel.CheckNull;
+import java.util.Collection;
 
 /**
  * Service implementation for {@link Company}

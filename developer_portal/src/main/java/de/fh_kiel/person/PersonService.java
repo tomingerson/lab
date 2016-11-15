@@ -1,14 +1,15 @@
 package de.fh_kiel.person;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.TreeSet;
-
+import de.fh_kiel.CheckNull;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.fh_kiel.CheckNull;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * Service implementation for {@link Person}
@@ -87,10 +88,14 @@ public class PersonService {
      */
     @CheckNull
     public Collection<Person> listPersons(final String programmingLanguage) {
+
         final Collection<Person> result = new TreeSet<>(new Comparator<Person>() {
             @Override
             public int compare(final Person o1, final Person o2) {
-                return new CompareToBuilder().append(o1.getLastName(), o2.getLastName()).append(o1.getFirstName(), o2.getFirstName()).toComparison();
+                return new CompareToBuilder()
+                        .append(o1.getLastName(), o2.getLastName())
+                        .append(o1.getFirstName(), o2.getFirstName())
+                        .toComparison();
             }
         });
 

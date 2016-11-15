@@ -6,5 +6,5 @@ package de.fh_kiel.person;
 public enum Gender {
     MALE,
     FEMALE,
-    OTHER;
+    OTHER
 }

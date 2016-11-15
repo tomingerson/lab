@@ -1,71 +1,49 @@
 package de.fh_kiel.person;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.Generated;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
-@Generated("annotation processor")
+/**
+ * A Developer is a Person that has some experience with some programming languages.
+ */
+@Getter
+@EqualsAndHashCode(callSuper = true, exclude = {"experienceInYears", "minimumSalary",
+        "programmingLanguages"})
+@ToString
 public class Developer extends Person {
+
+    private static final long serialVersionUID = 7129301796553739404L;
+
+    private final Set<String> programmingLanguages = new HashSet<>();
+    @Setter
     private int experienceInYears;
-
+    @Setter
     private int minimumSalary;
-
-    private Set<String> programmingLanguages;
 
     public Developer() {
     }
 
-    public Developer(final int experienceInYears, final int minimumSalary, final Set<String> programmingLanguages) {
+    public Developer(final Long id, final String firstName, final String lastName,
+                     final LocalDate dayOfBirth, final Gender gender, int experienceInYears,
+                     int minimumSalary, final String... programmingLanguages) {
+        super(id, firstName, lastName, dayOfBirth, gender);
         this.experienceInYears = experienceInYears;
         this.minimumSalary = minimumSalary;
-        this.programmingLanguages = programmingLanguages;
+        this.programmingLanguages.addAll(Arrays.asList(programmingLanguages));
     }
 
-    public int getExperienceInYears() {
-        return this.experienceInYears;
+    public void addProgrammingLanguage(String pl) {
+        this.programmingLanguages.add(pl);
     }
 
-    public void setExperienceInYears(final int experienceInYears) {
-        this.experienceInYears = experienceInYears;
-    }
-
-    public int getMinimumSalary() {
-        return this.minimumSalary;
-    }
-
-    public void setMinimumSalary(final int minimumSalary) {
-        this.minimumSalary = minimumSalary;
-    }
-
-    public Set<String> getProgrammingLanguages() {
-        return this.programmingLanguages;
-    }
-
-    public void setProgrammingLanguages(final Set<String> programmingLanguages) {
-        this.programmingLanguages = programmingLanguages;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (!(o instanceof Developer)) {
-            return false;
-        }
-        final Developer objCurr = (Developer) o;
-        return new EqualsBuilder().append(super.getId(), objCurr.getId()).isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-
-        return new HashCodeBuilder().append(super.getId()).hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+    public boolean removeProgrammingLanguage(String pl) {
+        return this.programmingLanguages.remove(pl);
     }
 }

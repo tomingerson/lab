@@ -1,14 +1,9 @@
 package de.fh_kiel.company;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.springframework.stereotype.Repository;
+
+import java.util.*;
 
 /**
  * DAO for operations on {@link Company}-Instances
@@ -82,7 +77,8 @@ public class CompanyDAO {
      * @return the company found or {@code null}, if no matching company was found
      */
     public Company getCompanyById(final Long id) {
-        return companies.stream().filter(c -> c.getId().equals(id)).findFirst().orElseThrow(() -> new IllegalStateException("no company found with id " + id));
+        return companies.stream().filter(c -> c.getId().equals(id)).findFirst()
+                .orElseThrow(() -> new IllegalStateException("no company found with id " + id));
     }
 
     /**

@@ -3,6 +3,7 @@ package de.fh_kiel;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * Application configuration for our spring boot app
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Bean;
  * @author jpr
  */
 @SpringBootApplication
+@EnableAspectJAutoProxy
 public class ApplicationConfig {
 
     public static void main(String[] args) throws Exception {

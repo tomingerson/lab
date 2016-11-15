@@ -1,17 +1,18 @@
 package de.fh_kiel.company;
 
-import java.util.List;
-
-import javax.annotation.Generated;
-
+import de.fh_kiel.person.Person;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import de.fh_kiel.person.Person;
+import javax.annotation.Generated;
+import java.io.Serializable;
+import java.util.List;
 
-@Generated("annotation processor")
-public class Company {
+public class Company implements Serializable {
+
+    private static final long serialVersionUID = 5880276806654543721L;
+
     private Long id;
 
     private String name;

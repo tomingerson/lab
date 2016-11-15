@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Thanks Adam Bien for using the same examples ;-)
  * <a href="http://www.adam-bien.com/roller/abien/entry/java_8_flatmap_example">Thanks, Adam Bien, for
  * using the same examples ;-)</a>
  *
