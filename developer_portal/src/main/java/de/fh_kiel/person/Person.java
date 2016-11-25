@@ -1,6 +1,9 @@
 package de.fh_kiel.person;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -18,9 +21,7 @@ public class Person implements Serializable {
 
     private Long id;
 
-    private String firstName;
-
-    private String lastName;
+    private String firstName, lastName;
 
     private LocalDate dayOfBirth;
 
