@@ -61,11 +61,15 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-.gradle/
+
+# IDEA files
 .idea/
+*.iml
+*.ipr
+*.iws
+
+# project specific files
+/developer_portal/src/main/generated/
+.gradle/
 build/
 gradle/
-lab.iml
-lab.ipr
-lab.iws
-/developer_portal/src/main/generated/
