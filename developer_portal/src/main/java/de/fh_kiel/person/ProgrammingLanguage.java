@@ -1,7 +1,5 @@
 package de.fh_kiel.person;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Column;
@@ -10,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -44,25 +43,17 @@ public class ProgrammingLanguage implements Serializable {
     public void setDevelopers(Set<Developer> developers) {
         this.developers = developers;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ProgrammingLanguage that = (ProgrammingLanguage) o;
-
-        return new EqualsBuilder()
-                .append(name, that.name)
-                .isEquals();
+        if (!(o instanceof ProgrammingLanguage)) return false;
+        ProgrammingLanguage programmingLanguage = (ProgrammingLanguage) o;
+        return getName() != null && Objects.equals(getName(), programmingLanguage.getName());
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(name)
-                .toHashCode();
+        return 1;
     }
 
     @Override

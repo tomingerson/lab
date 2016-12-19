@@ -1,7 +1,5 @@
 package de.fh_kiel.person;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Column;
@@ -12,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A Projectmanager is a Developer with some experience in project management.
@@ -65,22 +64,17 @@ public class ProjectManager implements Serializable {
     public void setDeveloper(Developer developer) {
         this.developer = developer;
     }
-
     @Override
-    public boolean equals(final Object o) {
-        if (!(o instanceof ProjectManager)) {
-            return false;
-        }
-        final ProjectManager objCurr = (ProjectManager) o;
-        return new EqualsBuilder()
-                .append(developer.getId(), objCurr.developer.getId())
-                .isEquals();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProjectManager)) return false;
+        ProjectManager projectManager = (ProjectManager) o;
+        return getId() != null && Objects.equals(getId(), projectManager.getId());
     }
 
     @Override
     public int hashCode() {
-
-        return new HashCodeBuilder().append(developer.getId()).hashCode();
+        return 19;
     }
 
     @Override

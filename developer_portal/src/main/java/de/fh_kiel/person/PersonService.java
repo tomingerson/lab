@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -41,8 +42,13 @@ public class PersonService {
      * @param person the person to create
      */
     @CheckNull
+    @Transactional
     public Person createPerson(final Person person) {
-        return personDAO.save(person);
+
+        if (person.getId() == null) {
+            return personDAO.save(person);
+        }
+        throw new IllegalStateException("ID must not be set in person " + person);
     }
 
     /**
@@ -51,6 +57,7 @@ public class PersonService {
      * @param person the person to update
      */
     @CheckNull
+    @Transactional
     public Person updatePerson(final Person person) {
         return personDAO.save(person);
     }
@@ -61,6 +68,7 @@ public class PersonService {
      * @param person the person to delete
      */
     @CheckNull
+    @Transactional
     public void deletePerson(final Person person) {
         personDAO.delete(person);
     }
@@ -72,6 +80,7 @@ public class PersonService {
      * @return the person found or {@code null}, if no matching person was found
      */
     @CheckNull
+    @Transactional
     public Optional<Person> getPersonById(final Long id) {
         return Optional.ofNullable(personDAO.findOne(id));
     }
@@ -79,6 +88,7 @@ public class PersonService {
     /**
      * @return all persons currently stored
      */
+    @Transactional
     public List<Person> getAllPersons() {
         return personDAO.findAll(new Sort("lastName", "firstName"));
     }
@@ -90,6 +100,7 @@ public class PersonService {
      * @return the persons who have experience in programminng with the supplied programming language
      */
     @CheckNull
+    @Transactional
     public Collection<Person> listPersons(final ProgrammingLanguage programmingLanguage) {
 
         return personDAO.findAll().stream()
