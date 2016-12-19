@@ -4,7 +4,9 @@ import de.fh_kiel.CheckNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service implementation for {@link Company}
@@ -32,8 +34,9 @@ public class CompanyService {
      * @param company the company to create
      */
     @CheckNull
-    public void createCompany(final Company company) {
-        companyDAO.createCompany(company);
+    @Transactional
+    public Company createCompany(final Company company) {
+        return companyDAO.save(company);
     }
 
     /**
@@ -42,8 +45,9 @@ public class CompanyService {
      * @param company the company to update
      */
     @CheckNull
-    public void updateCompany(final Company company) {
-        companyDAO.updateCompany(company);
+    @Transactional
+    public Company updateCompany(final Company company) {
+        return companyDAO.save(company);
     }
 
     /**
@@ -52,8 +56,9 @@ public class CompanyService {
      * @param company the company to delete
      */
     @CheckNull
+    @Transactional
     public void deleteCompany(final Company company) {
-        companyDAO.deleteCompany(company);
+        companyDAO.delete(company);
     }
 
 
@@ -64,15 +69,17 @@ public class CompanyService {
      * @return the company found or {@code null}, if no matching company was found
      */
     @CheckNull
-    public Company getCompanyById(final Long id) {
-        return companyDAO.getCompanyById(id);
+    @Transactional
+    public Optional<Company> getCompanyById(final Long id) {
+        return Optional.ofNullable(companyDAO.findOne(id));
     }
 
     /**
      * @return all companies currently stored
      */
-    public Collection<Company> getAllCompanies() {
-        return companyDAO.getAllCompanies();
+    @Transactional
+    public List<Company> getAllCompanies() {
+        return companyDAO.findAll();
     }
 
 }

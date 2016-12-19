@@ -3,11 +3,14 @@ package de.fh_kiel.person;
 import de.fh_kiel.CheckNull;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -38,8 +41,8 @@ public class PersonService {
      * @param person the person to create
      */
     @CheckNull
-    public void createPerson(final Person person) {
-        personDAO.createPerson(person);
+    public Person createPerson(final Person person) {
+        return personDAO.save(person);
     }
 
     /**
@@ -48,8 +51,8 @@ public class PersonService {
      * @param person the person to update
      */
     @CheckNull
-    public void updateCompany(final Person person) {
-        personDAO.updatePerson(person);
+    public Person updatePerson(final Person person) {
+        return personDAO.save(person);
     }
 
     /**
@@ -59,7 +62,7 @@ public class PersonService {
      */
     @CheckNull
     public void deletePerson(final Person person) {
-        personDAO.deletePerson(person);
+        personDAO.delete(person);
     }
 
     /**
@@ -69,15 +72,15 @@ public class PersonService {
      * @return the person found or {@code null}, if no matching person was found
      */
     @CheckNull
-    public Person getPersonById(final Long id) {
-        return personDAO.getPersonById(id);
+    public Optional<Person> getPersonById(final Long id) {
+        return Optional.ofNullable(personDAO.findOne(id));
     }
 
     /**
      * @return all persons currently stored
      */
-    public Collection<Person> getAllPersons() {
-        return personDAO.getAllPersons();
+    public List<Person> getAllPersons() {
+        return personDAO.findAll(new Sort("lastName", "firstName"));
     }
 
     /**
@@ -87,32 +90,20 @@ public class PersonService {
      * @return the persons who have experience in programminng with the supplied programming language
      */
     @CheckNull
-    public Collection<Person> listPersons(final String programmingLanguage) {
+    public Collection<Person> listPersons(final ProgrammingLanguage programmingLanguage) {
 
-        final Collection<Person> result = new TreeSet<>(new Comparator<Person>() {
-            @Override
-            public int compare(final Person o1, final Person o2) {
-                return new CompareToBuilder()
-                        .append(o1.getLastName(), o2.getLastName())
-                        .append(o1.getFirstName(), o2.getFirstName())
-                        .toComparison();
-            }
-        });
-
-        for (final Person person : personDAO.getAllPersons()) {
-            if (!(person instanceof Developer)) {
-                continue;
-            }
-
-            final Developer developer = (Developer) person;
-            for (final String currProgrammingLanguage : developer.getProgrammingLanguages()) {
-                if (currProgrammingLanguage.equals(programmingLanguage)) {
-                    result.add(developer);
-                    break;
-                }
-            }
-        }
-
-        return result;
+        return personDAO.findAll().stream()
+                .filter(Objects::nonNull)
+                .filter(Developer.class::isInstance)
+                .map(Developer.class::cast)
+                .filter(dev -> dev.getProgrammingLanguages().contains(programmingLanguage))
+                .collect(Collectors.toCollection(
+                        () -> new TreeSet<>(
+                                (Comparator<Person>) (o1, o2) -> new CompareToBuilder()
+                                        .append(o1.getLastName(), o2.getLastName())
+                                        .append(o1.getFirstName(), o2.getFirstName())
+                                        .toComparison()
+                        ))
+                );
     }
 }

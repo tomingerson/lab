@@ -65,12 +65,19 @@ public class PersonControllerTest {
     public void setup() {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
 
-        testPerson1 = new Person(null, "testFN1", "testLN1", LocalDate.of(1990, 1, 1), Gender
-                .OTHER);
+        testPerson1 = new Person();
+        testPerson1.setFirstName("testFN1");
+        testPerson1.setLastName("testLN1");
+        testPerson1.setDayOfBirth(LocalDate.of(1990, 1, 1));
+        testPerson1.setGender(Gender.OTHER);
         personService.createPerson(testPerson1);
 
-        testPerson2 = new Person(null, "testFN2", "testLN2", LocalDate.of(1990, 2, 2), Gender
-                .FEMALE);
+
+        testPerson2 = new Person();
+        testPerson2.setFirstName("testFN2");
+        testPerson2.setLastName("testLN2");
+        testPerson2.setDayOfBirth(LocalDate.of(1990, 2, 2));
+        testPerson2.setGender(Gender.FEMALE);
         personService.createPerson(testPerson2);
     }
 
@@ -100,8 +107,12 @@ public class PersonControllerTest {
 
     @Test
     public void createPerson() throws Exception {
-        final Person person = new Person(null, "postFN", "postLN", LocalDate.of(1999, 9, 9), Gender
-                .MALE);
+        final Person person = new Person();
+        person.setFirstName("postFN");
+        person.setLastName("postLN");
+        person.setDayOfBirth(LocalDate.of(1999, 9, 9));
+        person.setGender(Gender.MALE);
+
         final String jsonPerson = json(person);
         mockMvc.perform(post("/person")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -112,7 +123,12 @@ public class PersonControllerTest {
 
     @Test
     public void createPersonError() throws Exception {
-        final Person error = new Person(99L, "errorFN", "errorLN", LocalDate.MAX, Gender.OTHER);
+        final Person error = new Person();
+        error.setId(99L);
+        error.setFirstName("errorFN");
+        error.setLastName("errorLN");
+        error.setDayOfBirth(LocalDate.MAX);
+        error.setGender(Gender.MALE);
         mockMvc.perform(post("/person")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(json(error)))

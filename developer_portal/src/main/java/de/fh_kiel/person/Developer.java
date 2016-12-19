@@ -1,49 +1,87 @@
 package de.fh_kiel.person;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.time.LocalDate;
-import java.util.Arrays;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A Developer is a Person that has some experience with some programming languages.
+ * A Developer is a Person that has some experience with some programming languages and
+ * wants to earn some money.
  */
-@Getter
-@EqualsAndHashCode(callSuper = true, exclude = {"experienceInYears", "minimumSalary",
-        "programmingLanguages"})
-@ToString
+@Entity
 public class Developer extends Person {
 
-    private static final long serialVersionUID = 7129301796553739404L;
+    private static final long serialVersionUID = 7071792139422669663L;
 
-    private final Set<String> programmingLanguages = new HashSet<>();
-    @Setter
+    @ManyToMany
+    @JoinTable(name = "DevPl")
+    private final Set<ProgrammingLanguage> programmingLanguages = new HashSet<>();
+
+    @Column(nullable = false)
     private int experienceInYears;
-    @Setter
+
+    @Column(nullable = false)
     private int minimumSalary;
 
-    public Developer() {
+    public Set<ProgrammingLanguage> getProgrammingLanguages() {
+        return programmingLanguages;
     }
 
-    public Developer(final Long id, final String firstName, final String lastName,
-                     final LocalDate dayOfBirth, final Gender gender, int experienceInYears,
-                     int minimumSalary, final String... programmingLanguages) {
-        super(id, firstName, lastName, dayOfBirth, gender);
+    public int getExperienceInYears() {
+        return experienceInYears;
+    }
+
+    public void setExperienceInYears(int experienceInYears) {
         this.experienceInYears = experienceInYears;
+    }
+
+    public int getMinimumSalary() {
+        return minimumSalary;
+    }
+
+    public void setMinimumSalary(int minimumSalary) {
         this.minimumSalary = minimumSalary;
-        this.programmingLanguages.addAll(Arrays.asList(programmingLanguages));
     }
 
-    public void addProgrammingLanguage(String pl) {
-        this.programmingLanguages.add(pl);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Developer)) return false;
+
+        Developer developer = (Developer) o;
+
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(experienceInYears, developer.experienceInYears)
+                .append(minimumSalary, developer.minimumSalary)
+                .append(programmingLanguages, developer.programmingLanguages)
+                .isEquals();
     }
 
-    public boolean removeProgrammingLanguage(String pl) {
-        return this.programmingLanguages.remove(pl);
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(programmingLanguages)
+                .append(experienceInYears)
+                .append(minimumSalary)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("programmingLanguages", programmingLanguages)
+                .append("experienceInYears", experienceInYears)
+                .append("minimumSalary", minimumSalary)
+                .toString();
     }
 }

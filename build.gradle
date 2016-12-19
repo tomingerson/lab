@@ -67,11 +67,16 @@ project(':developer_portal') {
         compile("org.springframework.boot:spring-boot-starter-aop:${springBootVersion}"){
             exclude module: "logback-classic"
         }
+        compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"){
+            exclude module: "logback-classic"
+        }
         compile 'com.fasterxml.jackson.core:jackson-core:2.8.+'
         compile 'com.fasterxml.jackson.core:jackson-databind:2.8.+'
         compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.+'
         // Jackson cannot deserialize java.time.LocalDate without this lib yet
         compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.+'
+
+        compile("com.h2database:h2:1.+")
 
 
         compileOnly "org.projectlombok:lombok:1.16.+"
